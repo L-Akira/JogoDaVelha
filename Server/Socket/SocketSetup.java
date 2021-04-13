@@ -8,11 +8,11 @@ public class SocketSetup {
 	private ServerSocket serverSocket;
 	private int port;
 	
-	public SocketSetup(int portOptional) {
+	private SocketSetup(int portOptional) {
 		this.port = portOptional;
 	}
 	
-	public SocketSetup() {
+	private SocketSetup() {
 		this.port = 4000;
 	}
 	
