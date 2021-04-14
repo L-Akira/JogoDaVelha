@@ -10,7 +10,7 @@ public class Main {
 		new Thread() {
 			public void run() {
 				try {
-					SocketSetup socketSetup = SocketSetup.getInstance(8081);
+					SocketSetup socketSetup = SocketSetup.getInstance(8080);
 					Socket socket = socketSetup.setUpConnection();
 					System.out.println("Connection with client made");
 					socketSetup.closeConnection();
