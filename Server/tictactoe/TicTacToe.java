@@ -33,6 +33,8 @@ public class TicTacToe {
       return;
     this.hash[x][y] = state;
     this.moveCount++;
+
+    this.checkVictory(x, y, state);
   }
 
   public void checkVictory(int x, int y, ButtonState state) {
