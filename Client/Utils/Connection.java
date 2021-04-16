@@ -1,19 +1,21 @@
 package Client.Utils;
 
-import java.io.OutputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Connection {
 	private int port;
 	private static Connection instance;
-	private String handshakeMsg;
+	private String[] handshake;
 	private Socket socket;
-	private OutputStream out;
+	private ObjectOutputStream out;
 
 	
 	private Connection(int port) {
 		this.port = port;
-		this.handshakeMsg = "Connected";
+		this.handshake = new String[2];
+		this.handshake[0] = "Connected";
+		this.handshake[1] = "hello world";
 	}
 	
 	public static Connection getInstance(int port) {
@@ -26,8 +28,8 @@ public class Connection {
 	public void createConnection() throws Exception {
 		this.socket = new Socket("localhost", this.port);
 		try {
-			this.out = this.socket.getOutputStream();
-			this.out.write(this.handshakeMsg.getBytes());
+			this.out = new ObjectOutputStream(this.socket.getOutputStream());
+			this.out.writeObject(this.handshake);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
