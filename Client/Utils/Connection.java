@@ -9,13 +9,14 @@ public class Connection {
 	private String[] handshake;
 	private Socket socket;
 	private ObjectOutputStream out;
-
+	double num;
 	
 	private Connection(int port) {
+		num = Math.random();
 		this.port = port;
 		this.handshake = new String[2];
 		this.handshake[0] = "Connected";
-		this.handshake[1] = "hello world";
+		this.handshake[1] = "hello world" + num;
 	}
 	
 	public static Connection getInstance(int port) {
@@ -27,12 +28,9 @@ public class Connection {
 	
 	public void createConnection() throws Exception {
 		this.socket = new Socket("localhost", this.port);
-		try {
-			this.out = new ObjectOutputStream(this.socket.getOutputStream());
-			this.out.writeObject(this.handshake);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		this.out = new ObjectOutputStream(this.socket.getOutputStream());
+		this.out.writeObject(this.handshake);
+		this.out.flush();
 	}
 	
 	public void closeConnection() throws Exception {
