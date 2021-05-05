@@ -1,6 +1,6 @@
 package Client;
 
-import Client.Utils.Connection;
+import Client.SocketLib.Connection;
 
 public class Main {
 

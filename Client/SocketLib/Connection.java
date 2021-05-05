@@ -1,4 +1,4 @@
-package Client.Utils;
+package Client.SocketLib;
 
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -12,7 +12,6 @@ public class Connection {
 	double num;
 	
 	private Connection(int port) {
-		num = Math.random();
 		this.port = port;
 		this.handshake = new String[2];
 		this.handshake[0] = "Connected";
@@ -28,6 +27,7 @@ public class Connection {
 	
 	public void createConnection() throws Exception {
 		this.socket = new Socket("localhost", this.port);
+		
 		this.out = new ObjectOutputStream(this.socket.getOutputStream());
 		this.out.writeObject(this.handshake);
 		this.out.flush();
