@@ -1,6 +1,7 @@
 package Server;
 
 import java.net.Socket;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -8,7 +9,6 @@ import Server.SocketLib.Emitter;
 import Server.SocketLib.SocketHandler;
 import Server.SocketLib.SocketRunner;
 import Server.SocketLib.SocketSetup;
-import Server.tictactoe.TicTacToe;
 
 public class Main {
 	private static ExecutorService pool = Executors.newFixedThreadPool(4);
@@ -18,14 +18,16 @@ public class Main {
 		try {
 			SocketSetup socketSetup = new SocketSetup(8080);
 			SocketHandler socketHandler = new SocketHandler();
+			Emitter emitter = socketHandler.getEmitter();
 			
-			socketHandler.on("Connected", (msg, emmiter) -> {
-				emmiter.emit("Ok", "RECEIVED");
+			socketHandler.on("Connected", msg -> {
+				emitter.emit("Ok", "ok");
 				System.out.println(msg);				
 				return null;
 			});
 			
-			socketHandler.on("user", (user, emmiter) -> {
+			socketHandler.on("user", user -> {
+				emitter.emit("Yes", "hello");
 				System.out.println(user);
 				return null;
 			});

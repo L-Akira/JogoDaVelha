@@ -22,6 +22,7 @@ public class SocketSetup {
 	
 	public Socket setUpConnection() throws Exception {
 		Socket socket = serverSocket.accept();
+		ClientPool.getInstance().setClient(socket);
 		return socket;
 	}
 	

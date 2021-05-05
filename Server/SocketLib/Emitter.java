@@ -1,18 +1,25 @@
 package Server.SocketLib;
 
 import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.List;
 
 public class Emitter {
-	private ObjectOutputStream out;
+	private ClientPool pool;
 		
-	protected Emitter(ObjectOutputStream out) {
-		this.out = out;
+	protected Emitter() {
+		this.pool = ClientPool.getInstance();
 	}
 	
 	public void emit(String eventLabel, String msg) {
 		try {
 			String[] payload = new String[] {eventLabel, msg};
-			this.out.writeObject(payload);
+			List<Socket> clients = pool.getClients();
+			for(int i = 0; i < clients.size(); i++) {
+				Socket client = clients.get(i);
+				ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
+				out.writeObject(payload);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
