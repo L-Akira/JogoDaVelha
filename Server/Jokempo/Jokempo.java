@@ -1,11 +1,9 @@
-package Server.Jokempo;
-
-public class Jokenpo {
+public class Jokempo {
   private int player1;
   private int player2;
   private int victory;
 
-  public Jokenpo() {
+  public Jokempo() {
     this.victory = 0;
     this.player1 = 0;
     this.player2 = 0;
@@ -39,5 +37,7 @@ public class Jokenpo {
     } else {
       this.victory = 2;
     }
+
+    return this.victory;
   }
 }
