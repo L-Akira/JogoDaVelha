@@ -1,3 +1,5 @@
+package Server.Jokempo;
+
 public class Jokempo {
   private int player1;
   private int player2;
