@@ -1,7 +1,6 @@
 package Client.SocketLib;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class SocketSetup {
@@ -23,8 +22,8 @@ public class SocketSetup {
 		this.socket = new Socket(this.url, this.port);
 		System.out.println("Connected at: " + this.url + this.port);
 		
-	//	Emitter emitter = Emitter.getInstance(this.socket);
-		//emitter.emit("Connected", "request from client");
+		Emitter emitter = Emitter.getInstance(this.socket);
+		emitter.emit("Connected", "request from client");
 		
 		return this.socket;
 	}
