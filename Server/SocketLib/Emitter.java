@@ -19,6 +19,7 @@ public class Emitter {
 				Socket client = clients.get(i);
 				ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 				out.writeObject(payload);
+				out.flush();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

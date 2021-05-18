@@ -19,12 +19,12 @@ public class SocketSetup {
 		this.url = url;
 	}
 	
-	public Socket setupConnection() throws IOException {
+	public Socket setupConnection() throws IOException { 
 		this.socket = new Socket(this.url, this.port);
 		System.out.println("Connected at: " + this.url + this.port);
 		
-		Emitter emitter = Emitter.getInstance(this.socket);
-		emitter.emit("Connected", "request from client");
+	//	Emitter emitter = Emitter.getInstance(this.socket);
+		//emitter.emit("Connected", "request from client");
 		
 		return this.socket;
 	}

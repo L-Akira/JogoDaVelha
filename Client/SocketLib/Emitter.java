@@ -14,7 +14,7 @@ public class Emitter {
 		this.out = new ObjectOutputStream(this.socket.getOutputStream());
 	}
 	
-	protected static Emitter getInstance(Socket socket) throws IOException {
+	public static Emitter getInstance(Socket socket) throws IOException {
 		if(instance == null)
 			instance = new Emitter(socket);
 		

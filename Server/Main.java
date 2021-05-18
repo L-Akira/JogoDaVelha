@@ -19,7 +19,7 @@ public class Main {
 			SocketSetup socketSetup = new SocketSetup(8080);
 			SocketHandler socketHandler = new SocketHandler();
 			Emitter emitter = socketHandler.getEmitter();
-			
+			 
 			socketHandler.on("Connected", msg -> {
 				emitter.emit("Ok", "ok");
 				System.out.println(msg);				
