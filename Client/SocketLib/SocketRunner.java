@@ -12,21 +12,25 @@ import java.util.concurrent.TimeUnit;
 
 
 public class SocketRunner implements Runnable {
-	private ObjectInputStream in;
+	//private ObjectInputStream in;
 	private Socket socket;
 	private SocketHandler socketHandler;
 	private LinkedBlockingQueue<String[]> mailbox;
+	private MailBox mail;
+	private Emitter emitter;
 	
-	public SocketRunner(Socket socket, SocketHandler socketHandler) throws Exception {
+	public SocketRunner(Socket socket, SocketHandler socketHandler, MailBox mail) throws Exception {
 		this.socketHandler = socketHandler;
 		this.socket = socket;
-		this.in = new ObjectInputStream(this.socket.getInputStream());
+		//this.in = new ObjectInputStream(this.socket.getInputStream());
 		this.mailbox = new LinkedBlockingQueue<String[]>();
+		this.mail = mail;
+		 this.emitter = Emitter.getInstance(socket);
 	}
 
 	@Override
 	public void run() {
-		
+		/*
 		Thread handleIncomingMsg = new Thread() {
 			public void run() {
 				try {
@@ -42,13 +46,16 @@ public class SocketRunner implements Runnable {
 		
 		handleIncomingMsg.setDaemon(true);
 		handleIncomingMsg.start();
+		*/
+		
 		
 		List<Listener> listeners = this.socketHandler.listeners;
 		
 		try {
-			
+			this.emitter.emit("Connected", "request from client");
+		
 			while (true) {
-				
+				this.mailbox = mail.mailbox;
 				if(this.mailbox.size() == 0) {
 					continue;
 				}
@@ -59,7 +66,7 @@ public class SocketRunner implements Runnable {
 					Listener listener = listeners.get(i);
 					
 					if(listener.event.equals(data[0])) {
-						listener.callback.apply(data[1]);
+						listener.callback.apply(data[1], this.emitter);
 						break;
 					}
 				}
