@@ -28,6 +28,16 @@ public class SocketSetup {
 		return this.socket;
 	}
 	
+	public Socket setupConnection(String options) throws IOException { 
+		this.socket = new Socket(this.url, this.port);
+		System.out.println("Connected at: " + this.url + this.port);
+		
+		Emitter emitter = Emitter.getInstance(this.socket);
+		emitter.emit("Connected", options);
+		
+		return this.socket;
+	}
+	
 	protected Socket getSocket() {
 		return this.socket;
 	}

@@ -12,7 +12,15 @@ public class ClientPool {
 		this.pool = new ArrayList<Socket>();
 	}
 	
-	protected static ClientPool getInstance() {
+	public Socket getClient(int index) {
+		return this.pool.get(index);
+	}
+	
+	public int connectedClientsAmount() {
+		return pool.size();
+	}
+	
+	public static ClientPool getInstance() {
 		if(instance == null)
 			instance = new ClientPool();
 		
@@ -23,9 +31,7 @@ public class ClientPool {
 		this.pool.add(client);
 	}
 	
-	public Socket getClient(int index) {
-		return this.pool.get(index);
-	}
+	
 	
 	protected List<Socket> getClients() {
 		return this.pool;

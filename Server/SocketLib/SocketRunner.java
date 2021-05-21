@@ -20,7 +20,7 @@ public class SocketRunner implements Runnable{
 	@Override
 	public void run() {
 		List<Listener> listeners = this.socketHandler.listeners;
-		PoolManager poolManager = new PoolManager();
+		PoolManager poolManager = new PoolManager(listeners);
 		
 		try {
 			while(true) {
