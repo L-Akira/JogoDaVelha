@@ -32,43 +32,41 @@ public class Main {
 
 			socketHandler.on("Join", id -> {
 				arrayPlayer.add(Integer.parseInt(id));
-				
-				if(ClientPool.getInstance().connectedClientsAmount() == 2)
+
+				if (ClientPool.getInstance().connectedClientsAmount() == 2)
 					emitter.emit("Start", id);
 				return null;
 			});
-			
+
 			socketHandler.on("MakePlay", play -> {
 				String[] payload = play.split("-");
 				int id = Integer.parseInt(payload[1]);
 				int choice = Integer.parseInt(payload[0]);
-				
-				if (id == arrayPlayer.get(0))
+
+				if (id == arrayPlayer.get(0)) {
 					jokempo.setPlayer1(choice);
-				else
+				} else {
 					jokempo.setPlayer2(choice);
-				
-				String winner;
-				
+				}
+
+				String winner = "";
+
 				if (jokempo.play() == 1 && arrayPlayer.size() == 2) {
-					System.out.println("a");
-					winner = String.valueOf(arrayPlayer.get(0));	
-					emitter.emit("VictoryPlayer", winner);
+					winner = String.valueOf(arrayPlayer.get(0));
+
 				} else if (jokempo.play() == 2 && arrayPlayer.size() == 2) {
-					System.out.println("b");
 					winner = String.valueOf(arrayPlayer.get(1));
-					emitter.emit("VictoryPlayer", winner);
+
 				} else if (jokempo.play() == 3 && arrayPlayer.size() == 2) {
-					System.out.println("c");
 					winner = "empate";
-					emitter.emit("VictoryPlayer", winner);
-				} 
-								
-				
-				//jokempo.reset();
+				}
+				emitter.emit("VictoryPlayer", winner);
+
+				if (jokempo.getVictory() != 0)
+					jokempo.reset();
 				return null;
 			});
-			
+
 			socketHandler.on("Disconnect", index -> {
 				arrayPlayer.remove(Integer.valueOf(index));
 				emitter.emit("PlayerOut", "");

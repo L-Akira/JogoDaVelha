@@ -26,9 +26,11 @@ public class Jokempo {
   // pedra = 2
   // tesoura = 3
   public void reset() {
-    this.player1 = 0;
-    this.player2 = 0;
-    this.victory = 0;
+    if (this.victory != 0) {
+      this.player1 = 0;
+      this.player2 = 0;
+      this.victory = 0;
+    }
   }
 
   public void setPlayer1(int player1) {
@@ -47,19 +49,25 @@ public class Jokempo {
     return this.player2;
   }
 
-  public void makeRandomPlay(int play) {
+  public int getVictory() {
+    return this.victory;
+  }
+
+  public void makeRandomPlay() {
     this.player2 = generator.nextInt(4) + 1;
   }
 
   public int play() {
-    if (this.player1 == this.player2) {
-      this.victory = 3;
-    } else if (this.player1 - this.player2 == -1 || this.player1 - this.player2 == 2) {
-      this.victory = 1;
-    } else {
-      this.victory = 2;
-    }
+    if (this.player1 != 0 && this.player2 != 0) {
+      if (this.player1 == this.player2) {
+        this.victory = 3;
+      } else if (this.player1 - this.player2 == -1 || this.player1 - this.player2 == 2) {
+        this.victory = 1;
+      } else {
+        this.victory = 2;
+      }
 
+    }
     return this.victory;
   }
 }
