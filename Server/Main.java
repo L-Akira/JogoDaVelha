@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import Server.SocketLib.ClientPool;
 import Server.SocketLib.Emitter;
 import Server.SocketLib.SocketHandler;
 import Server.SocketLib.SocketRunner;
@@ -21,39 +22,56 @@ public class Main {
 			SocketHandler socketHandler = new SocketHandler();
 			Emitter emitter = socketHandler.getEmitter();
 			Jokempo jokempo = new Jokempo();
-			List arrayPlayer = new ArrayList<Integer>();
+			List<Integer> arrayPlayer = new ArrayList<Integer>();
 
 			socketHandler.on("Connected", msg -> {
-				emitter.emit("Ok", "ok");
 				System.out.println(msg);
+				emitter.emit("Ok", msg);
 				return null;
 			});
 
-			socketHandler.on("Ok", id -> {
-				arrayPlayer.push(id);
+			socketHandler.on("Join", id -> {
+				arrayPlayer.add(Integer.parseInt(id));
+				
+				if(ClientPool.getInstance().connectedClientsAmount() == 2)
+					emitter.emit("Start", id);
+				return null;
 			});
-
+			
 			socketHandler.on("MakePlay", play -> {
-				emitter.emit("Thanks", "thanks");
 				String[] payload = play.split("-");
-				if (payload[1] = arrayPlayer.get(0))
-					this.jokempo.setPlayer1(payload[0]);
+				int id = Integer.parseInt(payload[1]);
+				int choice = Integer.parseInt(payload[0]);
+				
+				if (id == arrayPlayer.get(0))
+					jokempo.setPlayer1(choice);
 				else
-					this.jokempo.setPlayer2(payload[0]);
-
-				if (jokempo.play() == 1 && jokempo.getPlayer1() != 0 && jokempo.getPlayer2() != 0) {
-					emitter.emit("VictoryPlayer", "vitoria1");
-				}
-
-				else if (jokempo.play() == 2 && jokempo.getPlayer1() != 0 && jokempo.getPlayer2() != 0) {
-					emitter.emit("VictoryPlayer", "vitoria2");
-				}
-
-				else if (jokempo.play() == 3 && jokempo.getPlayer1() != 0 && jokempo.getPlayer2() != 0) {
-					emitter.emit("VictoryPlayer", "Empate");
-				}
-
-				jokempo.reset();
+					jokempo.setPlayer2(choice);
+				
+				String winner;
+				
+				if (jokempo.play() == 1 && arrayPlayer.size() == 2) {
+					System.out.println("a");
+					winner = String.valueOf(arrayPlayer.get(0));	
+					emitter.emit("VictoryPlayer", winner);
+				} else if (jokempo.play() == 2 && arrayPlayer.size() == 2) {
+					System.out.println("b");
+					winner = String.valueOf(arrayPlayer.get(1));
+					emitter.emit("VictoryPlayer", winner);
+				} else if (jokempo.play() == 3 && arrayPlayer.size() == 2) {
+					System.out.println("c");
+					winner = "empate";
+					emitter.emit("VictoryPlayer", winner);
+				} 
+								
+				
+				//jokempo.reset();
+				return null;
+			});
+			
+			socketHandler.on("Disconnect", index -> {
+				arrayPlayer.remove(Integer.valueOf(index));
+				emitter.emit("PlayerOut", "");
 				return null;
 			});
 
